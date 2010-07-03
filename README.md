@@ -1,1 +1,1 @@
-# DB.rb: Database written in Ruby
+# DB.rb: Database engine written in Ruby
