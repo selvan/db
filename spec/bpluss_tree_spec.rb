@@ -134,7 +134,7 @@ describe DB::Core::BPluss do
       @btree.insert(3, "Three");
       @btree.insert(12, "Twelve");
       @btree.insert(9, "Nine");
-      @btree.insert(6, "Nine");
+      @btree.insert(6, "Six");
       root_node=@btree.root_node
       right_most_node = root_node.infinity_node.infinity_node
       right_most_node.keys.should == [9, 12]
@@ -147,5 +147,37 @@ describe DB::Core::BPluss do
       right_most_node.pre_node.pre_node.pre_node.pre_node.keys.should == [1, 3]
       right_most_node.pre_node.pre_node.pre_node.pre_node.parent_node.keys.should == [3]
     end
+
+    it "should support duplicate keys" do
+      @btree.insert(5, "Five");
+      @btree.insert(8, "Eight");
+      @btree.insert(1, "One");
+      @btree.insert(7, "One");
+      @btree.insert(3, "Three");
+      @btree.insert(12, "Twelve");
+      @btree.insert(9, "Nine");
+      @btree.insert(6, "Nine");
+      @btree.insert(5, "Five Two");
+      
+      root_node=@btree.root_node
+      right_most_node = root_node.infinity_node.infinity_node
+      right_most_node.keys.should == [9, 12]
+      right_most_node.parent_node.keys.should == [7, 8]
+      right_most_node.pre_node.keys.should == [8]
+      right_most_node.pre_node.pre_node.keys.should == [6, 7]
+      right_most_node.pre_node.pre_node.parent_node.keys.should == [7, 8]
+
+      ## Chk duplicate key 5 ##
+      right_most_node.pre_node.pre_node.pre_node.keys.should == [5]
+      values = right_most_node.pre_node.pre_node.pre_node.keys_and_data_pointers[0][1]
+      values.should be_instance_of(Array)
+      values[0].should == "Five"
+      values[1].should == "Five Two"
+
+      right_most_node.pre_node.pre_node.pre_node.parent_node.keys.should == [3]
+      right_most_node.pre_node.pre_node.pre_node.pre_node.keys.should == [1, 3]
+      right_most_node.pre_node.pre_node.pre_node.pre_node.parent_node.keys.should == [3]
+    end
+
   end
 end
