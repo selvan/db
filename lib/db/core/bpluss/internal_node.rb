@@ -31,6 +31,22 @@ module DB
           split if @keys_and_node_pointers.size > @max_capacity
         end
 
+        def search(key)
+          match=nil
+          case
+            when key > max_key_value
+              match=@infinity_node.search(key)
+            else
+              @keys_and_node_pointers.each do |key_node|
+                if key <= key_node[0]
+                  match=key_node[1].search(key)
+                  break;
+                end
+              end
+          end
+          return match
+        end
+
         def insert(key, value)
           case
             when key > max_key_value

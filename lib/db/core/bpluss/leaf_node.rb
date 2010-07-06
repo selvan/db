@@ -3,7 +3,7 @@ module DB
     module BPluss
       class LeafNode
 
-        attr_accessor :keys_and_data_pointers 
+        attr_accessor :keys_and_data_pointers
         attr_accessor :parent_node, :pre_node, :next_node
 
         def initialize(order=3, keys_and_datapointers=[])
@@ -28,6 +28,18 @@ module DB
         def key_exists?(key)
           DB::Core::Common.binary_search(@keys_and_data_pointers, key, 0, @keys_and_data_pointers.length-1) {|ele| ele[0]}
         end
+
+        def search(key)
+          match=nil
+          @keys_and_data_pointers.each do |key_node|
+            if key == key_node[0]
+              match=key_node[1]
+              break;
+            end
+          end
+          return match
+        end
+
 
         def insert(key, value)
           existing_node = key_exists?(key)
