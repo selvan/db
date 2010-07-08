@@ -48,6 +48,14 @@ module DB
               end if max_key_value > key
               match += next_node.search(key, operator) unless next_node.nil?
               return match
+            when DB::Core::Common::Comparison::GTE
+              @keys_and_data_pointers.each do |key_node|
+                if key_node[0] >= key
+                  match << key_node[1]
+                end
+              end if max_key_value >= key
+              match += next_node.search(key, operator) unless next_node.nil?
+              return match
           end
         end
 

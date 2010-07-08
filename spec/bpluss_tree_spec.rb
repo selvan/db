@@ -222,5 +222,13 @@ describe DB::Core::BPluss do
       r[0].should == "Twelve"
     end
 
+    it "should support GTE search" do
+      r=@btree.search(8, DB::Core::Common::Comparison::GTE)
+      r.size.should == 3
+      r[0].should == "Eight"
+      r[1].should == "Nine"
+      r[2].should == "Twelve"
+    end
+    
   end
 end
