@@ -220,6 +220,10 @@ describe DB::Core::BPluss do
       r=@btree.search(9, DB::Core::Common::Comparison::GT)
       r.size.should == 1
       r[0].should == "Twelve"
+
+      r=@btree.search(10, DB::Core::Common::Comparison::GT)
+      r.size.should == 1
+      r[0].should == "Twelve"
     end
 
     it "should support GTE search" do
@@ -228,6 +232,22 @@ describe DB::Core::BPluss do
       r[0].should == "Eight"
       r[1].should == "Nine"
       r[2].should == "Twelve"
+    end
+
+    it "should support LT search" do
+      r=@btree.search(3, DB::Core::Common::Comparison::LT)
+      r.size.should == 1
+      r[0].should == "One"
+
+      r=@btree.search(6, DB::Core::Common::Comparison::LT)
+      r.size.should == 3
+      r[0].should == "One"
+      r[1].should == "Three"
+      r[2].should == ["Five", "Five Two"]
+
+      r=@btree.search(2.5, DB::Core::Common::Comparison::LT)
+      r.size.should == 1
+      r[0].should == "One"
     end
     
   end
