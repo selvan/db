@@ -109,8 +109,10 @@ module DB
           @keys_and_data_pointers.slice!(0..split_index)
 
           new_node=LeafNode.new(@order, splited_values)
+
           new_node.pre_node = @pre_node
           new_node.next_node=self
+          new_node.pre_node.next_node=new_node unless new_node.pre_node.nil? 
           @pre_node=new_node
 
           @parent_node = InternalNode.new(@order, self) if @parent_node.nil?

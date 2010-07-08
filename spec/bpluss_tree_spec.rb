@@ -169,6 +169,7 @@ describe DB::Core::BPluss do
 
       ## Chk duplicate key 5 ##
       right_most_node.pre_node.pre_node.pre_node.keys.should == [5]
+      right_most_node.pre_node.pre_node.pre_node.next_node.keys.should == [6, 7]
       values = right_most_node.pre_node.pre_node.pre_node.keys_and_data_pointers[0][1]
       values.should be_instance_of(Array)
       values[0].should == "Five"
@@ -212,6 +213,10 @@ describe DB::Core::BPluss do
     end
 
     it "should support GT search" do
+
+      r=@btree.search(5, DB::Core::Common::Comparison::GT)
+      r.size.should == 5
+      
       r=@btree.search(8, DB::Core::Common::Comparison::GT)
       r.size.should == 2
       r[0].should == "Nine"
@@ -267,6 +272,5 @@ describe DB::Core::BPluss do
       r.size.should == 1
       r[0].should == "One"
     end
-    
   end
 end
