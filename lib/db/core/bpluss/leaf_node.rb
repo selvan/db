@@ -66,6 +66,16 @@ module DB
               pre_match = pre_node.search(key, operator) unless pre_node.nil?
               match = pre_match + match
               return match
+            when DB::Core::Common::Comparison::LTE
+              @keys_and_data_pointers.each do |key_node|
+                if key_node[0] <= key
+                  match << key_node[1]
+                end
+              end
+              pre_match = []
+              pre_match = pre_node.search(key, operator) unless pre_node.nil?
+              match = pre_match + match
+              return match
           end
         end
 

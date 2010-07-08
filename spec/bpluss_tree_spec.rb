@@ -186,11 +186,11 @@ describe DB::Core::BPluss do
       @btree.insert(5, "Five");
       @btree.insert(8, "Eight");
       @btree.insert(1, "One");
-      @btree.insert(7, "One");
+      @btree.insert(7, "Seven");
       @btree.insert(3, "Three");
       @btree.insert(12, "Twelve");
       @btree.insert(9, "Nine");
-      @btree.insert(6, "Nine");
+      @btree.insert(6, "Six");
       @btree.insert(5, "Five Two");
     end
 
@@ -246,6 +246,24 @@ describe DB::Core::BPluss do
       r[2].should == ["Five", "Five Two"]
 
       r=@btree.search(2.5, DB::Core::Common::Comparison::LT)
+      r.size.should == 1
+      r[0].should == "One"
+    end
+
+    it "should support LTE search" do
+      r=@btree.search(3, DB::Core::Common::Comparison::LTE)
+      r.size.should == 2
+      r[0].should == "One"
+      r[1].should == "Three"
+
+      r=@btree.search(6, DB::Core::Common::Comparison::LTE)
+      r.size.should == 4
+      r[0].should == "One"
+      r[1].should == "Three"
+      r[2].should == ["Five", "Five Two"]
+      r[3].should == "Six"
+
+      r=@btree.search(2.5, DB::Core::Common::Comparison::LTE)
       r.size.should == 1
       r[0].should == "One"
     end
