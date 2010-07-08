@@ -6,7 +6,7 @@ module DB
         attr_reader :root_node
 
         def initialize(order=3)
-          raise "Order less than 3 is not good for bpluss tree" if(order<3)
+          raise "Order less than 3 is not good for bpluss tree" if (order<3)
           @order=order
           @root_node=LeafNode.new(@order)
         end
@@ -17,7 +17,12 @@ module DB
         end
 
         def search(key, operator=DB::Core::Common::Comparison::EQ)
-          @root_node.search(key, operator)          
+          case operator
+            when DB::Core::Common::Comparison::NEQ
+              @root_node.search(key, DB::Core::Common::Comparison::LT) + @root_node.search(key, DB::Core::Common::Comparison::GT)
+            else
+              @root_node.search(key, operator)
+          end
         end
 
       end

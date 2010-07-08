@@ -272,5 +272,11 @@ describe DB::Core::BPluss do
       r.size.should == 1
       r[0].should == "One"
     end
+
+    it "should support NEQ search" do
+      r=@btree.search(5, DB::Core::Common::Comparison::NEQ)
+      r.size.should == 7
+      r.should == ["One", "Three", "Six", "Seven", "Eight", "Nine", "Twelve"]
+    end
   end
 end
