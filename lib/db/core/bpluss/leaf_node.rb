@@ -29,15 +29,26 @@ module DB
           DB::Core::Common.binary_search(@keys_and_data_pointers, key, 0, @keys_and_data_pointers.length-1) {|ele| ele[0]}
         end
 
-        def search(key)
-          match=nil
-          @keys_and_data_pointers.each do |key_node|
-            if key == key_node[0]
-              match=key_node[1]
-              break;
-            end
+        def search(key, operator=DB::Core::Common::Comparison::EQ)
+          match=[]
+          case operator
+            when DB::Core::Common::Comparison::EQ
+              @keys_and_data_pointers.each do |key_node|
+                if key == key_node[0]
+                  match << key_node[1]
+                  break;
+                end
+              end
+              return match[0]
+            when DB::Core::Common::Comparison::GT  ## Find nodes that are greater than key
+              @keys_and_data_pointers.each do |key_node|
+                if key_node[0] > key
+                  match << key_node[1]
+                end
+              end if max_key_value > key
+              match += next_node.search(key, operator) unless next_node.nil?
+              return match
           end
-          return match
         end
 
 

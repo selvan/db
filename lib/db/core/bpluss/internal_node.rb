@@ -31,15 +31,15 @@ module DB
           split if @keys_and_node_pointers.size > @max_capacity
         end
 
-        def search(key)
+        def search(key, operator=DB::Core::Common::Comparison::EQ)
           match=nil
           case
             when key > max_key_value
-              match=@infinity_node.search(key)
+              match=@infinity_node.search(key, operator)
             else
               @keys_and_node_pointers.each do |key_node|
                 if key <= key_node[0]
-                  match=key_node[1].search(key)
+                  match=key_node[1].search(key, operator)
                   break;
                 end
               end

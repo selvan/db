@@ -16,8 +16,8 @@ module DB
           @root_node = @root_node.parent_node unless @root_node.parent_node.nil?
         end
 
-        def search(key)
-          @root_node.search(key)          
+        def search(key, operator=DB::Core::Common::Comparison::EQ)
+          @root_node.search(key, operator)          
         end
 
       end

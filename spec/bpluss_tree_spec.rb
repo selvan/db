@@ -193,13 +193,14 @@ describe DB::Core::BPluss do
       @btree.insert(6, "Nine");
       @btree.insert(5, "Five Two");
     end
-    it "should support equiv search" do
+
+    it "should support EQ search" do
       r=@btree.search(8)
       r.should be_instance_of(String)
       r.should == "Eight"
     end
 
-    it "should support equiv search - multiple values" do
+    it "should support EQ search - multiple values" do
       r=@btree.search(5)
       r.should be_instance_of(Array)
       r.size==2
@@ -208,6 +209,17 @@ describe DB::Core::BPluss do
     it "should return null when key not exist" do
       r=@btree.search(500)
       r.should == nil
+    end
+
+    it "should support GT search" do
+      r=@btree.search(8, DB::Core::Common::Comparison::GT)
+      r.size.should == 2
+      r[0].should == "Nine"
+      r[1].should == "Twelve"
+
+      r=@btree.search(9, DB::Core::Common::Comparison::GT)
+      r.size.should == 1
+      r[0].should == "Twelve"
     end
 
   end

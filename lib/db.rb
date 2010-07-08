@@ -1,4 +1,5 @@
 require 'db/core/common/binary_search'
+require 'db/core/common/comparison'
 
 require 'db/core/bpluss/leaf_node'
 require 'db/core/bpluss/internal_node'
